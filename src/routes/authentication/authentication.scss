@@ -1,0 +1,15 @@
+.authentication-container {
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  margin: 24px auto;
+  &::before {
+    position: absolute;
+    content: "";
+    width: 1px;
+    height: 550px;
+    background-color: black;
+    top: 10%;
+    left: 50%;
+  }
+}

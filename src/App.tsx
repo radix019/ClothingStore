@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/NavigationBar/navbar";
+import Home from "./routes/Home";
+import Authentication from "./routes/authentication/authentication";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "./utils/firebase/firebaseConfig";
+import Signup from "./components/signup/signup";
+import Shopping from "./components/shop/shopping";
 
-function App() {
+initializeApp(firebaseConfig);
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navbar />}>
+        <Route index element={<Home />} />
+        <Route path="shop" element={<Shopping />} />
+        <Route path="auth" element={<Authentication />} />
+        <Route path="signup" element={<Signup />} />
+      </Route>
+    </Routes>
   );
-}
+};
 
 export default App;

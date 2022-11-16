@@ -1,0 +1,48 @@
+.navigation {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+
+  @media screen and (max-width: 800px) {
+    height: 60px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+  }
+  .nav-links-container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 0 20px;
+    .nav-link {
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 800px) {
+      width: 80%;
+    }
+  }
+  .logo-contianer {
+    height: 100%;
+    width: 70px;
+    padding: 25px;
+
+    @media screen and (max-width: 800px) {
+      width: 50px;
+      padding: 0px;
+    }
+  }
+}
+
+// export const NavLinks = styled.div`
+//
+// `;
+
+// export const NavLink = styled(Link)`
+//   padding: 10px 15px;
+//   cursor: pointer;
+// `;

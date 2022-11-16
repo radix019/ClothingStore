@@ -1,0 +1,15 @@
+.sign-up-contianer {
+  display: flex;
+  flex-direction: column;
+  min-width: 480px;
+  // outline: 2px solid red;
+  padding: 12px 24px;
+
+  h2 {
+    margin: 10px 0;
+  }
+  .action-container {
+    display: flex;
+    justify-content: space-between;
+  }
+}
