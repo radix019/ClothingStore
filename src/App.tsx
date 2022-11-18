@@ -5,7 +5,7 @@ import Authentication from "./routes/authentication/authentication";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./utils/firebase/firebaseConfig";
 import Signup from "./components/signup/signup";
-import Shopping from "./components/shop/shopping";
+import Products from "./components/products/Products";
 
 initializeApp(firebaseConfig);
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Navbar />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shopping />} />
+        <Route path="shop" element={<Products />} />
         <Route path="auth" element={<Authentication />} />
         <Route path="signup" element={<Signup />} />
       </Route>

@@ -1,4 +1,5 @@
 import React from "react";
+import { ShoppingCart } from "../../contexts/ShoppingCart";
 import ActionButton from "../buttons/actionButton";
 import "./product-card.styles.scss";
 
@@ -10,6 +11,10 @@ export interface ProductCardProps {
 }
 
 const ProductCard = ({ id, name, imageUrl, price }: ProductCardProps) => {
+  const shopping = React.useContext(ShoppingCart);
+  const onAddToCart = () => {
+    shopping.addToCart({ id, name, imageUrl, price });
+  };
   return (
     <div className="product-card-container">
       <img className="img" src={imageUrl} alt={name} />
@@ -17,7 +22,9 @@ const ProductCard = ({ id, name, imageUrl, price }: ProductCardProps) => {
         <span className="name">{name}</span>
         <span className="price">{price}</span>
       </div>
-      <ActionButton ClassType="inverted">Add to Cart</ActionButton>
+      <ActionButton onClick={onAddToCart} ClassType="inverted">
+        Add to Cart
+      </ActionButton>
     </div>
   );
 };

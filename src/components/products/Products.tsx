@@ -1,9 +1,9 @@
 import React from "react";
 import { ProductContext } from "../../contexts/dataContext";
 import ProductCard from "../productCard/productCard";
-import "./shopping.scss";
+import "./Products.scss";
 
-const Shopping = () => {
+const Products = () => {
   const { products } = React.useContext(ProductContext);
   return (
     <div className="products-container">
@@ -20,4 +20,4 @@ const Shopping = () => {
   );
 };
 
-export default Shopping;
+export default Products;

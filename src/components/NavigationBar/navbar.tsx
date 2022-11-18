@@ -15,7 +15,6 @@ const Navbar = () => {
     await signOut(auth);
   };
   const { isCartOpen } = React.useContext(ShoppingCart);
-  console.log("isCartOpen", isCartOpen);
   return (
     <>
       <div className="navigation">
