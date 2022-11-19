@@ -5,11 +5,6 @@ import { ShoppingCart } from "../../contexts/ShoppingCart";
 
 const CartIcon = () => {
   const shopping = React.useContext(ShoppingCart);
-  const CartItemsCount = () => {
-    return shopping.cartItems
-      .map((item) => item.quantity)
-      .reduce((acc = 0, cur = 0) => acc + cur, 0);
-  };
   return (
     <div
       className="cart-icon-container"
