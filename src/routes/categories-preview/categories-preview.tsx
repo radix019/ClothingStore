@@ -4,13 +4,7 @@ import ProductCard from "../../components/productCard/productCard";
 import { ProductContext } from "../../contexts/dataContext";
 
 import "./categories-preview.scss";
-enum CategoriesRoutes {
-  HATS = "hats",
-  JACKETS = "jackets",
-  MENS = "mens",
-  SNEAKERS = "sneakers",
-  WOMENS = "womens",
-}
+
 const CategoriesPreview = () => {
   const { products } = React.useContext(ProductContext);
   const navigate = useNavigate();

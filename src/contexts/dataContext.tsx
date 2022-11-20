@@ -1,4 +1,3 @@
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import React, { createContext } from "react";
 import { ShopData } from "../shop-data";
 import { getCollectionAndDocument } from "../utils/firebase/firebaseConfig";
@@ -16,13 +15,8 @@ interface ProductContextProviderProps {
 
 export const ProductContextProvider = React.memo<ProductContextProviderProps>(
   (props) => {
-    // const [products, setProducts] =
-    // React.useState<QuerySnapshot<DocumentData>>();
     const [products, setProducts] = React.useState<Array<ShopData>>([]);
 
-    // React.useEffect(() => {
-    //   addCollectionAndDocuments("categories", SHOP_DATA);
-    // }, []);
     React.useEffect(() => {
       const asynFn = async () => {
         const querySnapshot = await getCollectionAndDocument();

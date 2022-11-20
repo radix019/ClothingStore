@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Categories } from "../../interfaces/components";
 import "./category-item.scss";
 
 interface CategoryItemProps {
