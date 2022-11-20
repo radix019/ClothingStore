@@ -1,3 +1,9 @@
+.products-wrapper {
+  h2 {
+    margin: 100px 0 20px 0;
+    cursor: pointer;
+  }
+}
 .products-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

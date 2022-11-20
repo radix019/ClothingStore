@@ -19,10 +19,10 @@ const AllCategories = () => {
       name: "Sneakers",
       imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
     },
-    { id: 4, name: "Women", imageUrl: "https://i.ibb.co/GCCdy8t/womens.png" },
+    { id: 4, name: "Womens", imageUrl: "https://i.ibb.co/GCCdy8t/womens.png" },
     {
       id: 5,
-      name: "Men",
+      name: "Mens",
       imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
     },
   ];

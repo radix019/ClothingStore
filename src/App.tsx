@@ -5,8 +5,8 @@ import Authentication from "./routes/authentication/authentication";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./utils/firebase/firebaseConfig";
 import Signup from "./components/signup/signup";
-import Products from "./components/products/Products";
 import Checkout from "./routes/checkout/checkout";
+import Shop from "./components/shop/shop";
 
 initializeApp(firebaseConfig);
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Navbar />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Products />} />
+        <Route path="shop/*" element={<Shop />} />
         <Route path="auth" element={<Authentication />} />
         <Route path="signup" element={<Signup />} />
         <Route path="checkout" element={<Checkout />} />

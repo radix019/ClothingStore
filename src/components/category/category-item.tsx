@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Categories } from "../../interfaces/components";
 import "./category-item.scss";
 
@@ -8,8 +9,12 @@ interface CategoryItemProps {
 }
 
 const CategoryItem = ({ id, name, imageUrl }: CategoryItemProps) => {
+  const navigate = useNavigate();
+  const navigateTo = () => {
+    navigate(`/shop/${name}`);
+  };
   return (
-    <div key={id} className="category-container">
+    <div key={id} className="category-container" onClick={navigateTo}>
       <div
         className="background-image"
         style={{ backgroundImage: `url(${imageUrl})` }}
