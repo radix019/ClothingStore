@@ -1,6 +1,5 @@
 import React from "react";
 import { ShoppingCart } from "../../contexts/ShoppingCart";
-import { Product } from "../../types_models";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
 import "./checkoutItems.scss";
