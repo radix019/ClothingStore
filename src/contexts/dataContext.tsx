@@ -22,7 +22,6 @@ export const ProductContextProvider = React.memo<ProductContextProviderProps>(
         const querySnapshot = await getCollectionAndDocument();
         const productsData: any = [];
         querySnapshot.forEach((item) => {
-          console.log("item.data", typeof item.data());
           // need to capture this data in a Map object instead of array, to be done later
           productsData.push(item.data());
         });
@@ -30,7 +29,6 @@ export const ProductContextProvider = React.memo<ProductContextProviderProps>(
       };
       asynFn();
     }, []);
-    console.log("product", products);
     const value = { products, setProducts };
     return (
       <ProductContext.Provider value={value}>

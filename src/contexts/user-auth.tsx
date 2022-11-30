@@ -5,14 +5,38 @@ import {
   onAuthStateChangedLister,
 } from "../utils/firebase/firebaseConfig";
 
-interface UserAuth {
+export enum USER_ACTION_TYPE {
+  SET_LOGGEDIN_USER = "SET_LOGGEDIN_USER",
+}
+interface UserState {
   loggedInUser: User | null;
-  setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-export const UserAuthContext = createContext<UserAuth>({
+export interface UserAction {
+  type: USER_ACTION_TYPE;
+  payload: User | null;
+}
+
+const initUserState: UserState = {
   loggedInUser: null,
-  setLoggedInUser: () => null,
+};
+
+export const UserReducer = (state = initUserState, action: UserAction) => {
+  switch (action.type) {
+    case USER_ACTION_TYPE.SET_LOGGEDIN_USER:
+      const userAuth = action.payload as User | null;
+      return {
+        ...state,
+        loggedInUser: userAuth,
+      };
+
+    default:
+      throw new Error(`Unhandeled type ${action.type} in userReducer`);
+  }
+};
+
+export const UserAuthContext = createContext<UserState>({
+  loggedInUser: null,
 });
 
 interface UserAuthProps {
@@ -20,18 +44,19 @@ interface UserAuthProps {
 }
 
 export const UserAuthProvider = React.memo<UserAuthProps>((authProps) => {
-  const [loggedInUser, setLoggedInUser] = React.useState<User | null>(null);
+  const [userReducer, dispatch] = React.useReducer(UserReducer, initUserState);
 
-  const value = { loggedInUser, setLoggedInUser };
+  const value = { loggedInUser: userReducer.loggedInUser };
+
   React.useEffect(() => {
     const unsubscribe = onAuthStateChangedLister((user) => {
       if (user) {
         createUserDocument(user);
       }
-      setLoggedInUser(user);
+      dispatch({ type: USER_ACTION_TYPE.SET_LOGGEDIN_USER, payload: user });
     });
     return unsubscribe;
-  });
+  }, []);
   return (
     <UserAuthContext.Provider value={value}>
       {authProps.children}
