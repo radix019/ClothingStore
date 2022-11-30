@@ -1,9 +1,10 @@
-import { User } from "firebase/auth";
 import React, { createContext } from "react";
+import { User } from "firebase/auth";
 import {
   createUserDocument,
   onAuthStateChangedLister,
 } from "../utils/firebase/firebaseConfig";
+import produce from "immer";
 
 export enum USER_ACTION_TYPE {
   SET_LOGGEDIN_USER = "SET_LOGGEDIN_USER",
@@ -25,10 +26,9 @@ export const UserReducer = (state = initUserState, action: UserAction) => {
   switch (action.type) {
     case USER_ACTION_TYPE.SET_LOGGEDIN_USER:
       const userAuth = action.payload as User | null;
-      return {
-        ...state,
-        loggedInUser: userAuth,
-      };
+      return produce(state, (draft) => {
+        draft.loggedInUser = userAuth;
+      });
 
     default:
       throw new Error(`Unhandeled type ${action.type} in userReducer`);
