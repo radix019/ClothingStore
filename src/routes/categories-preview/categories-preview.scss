@@ -1,7 +1,14 @@
 .products-wrapper {
-  h2 {
+  .title-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     margin: 100px 0 20px 0;
-    cursor: pointer;
+
+    h3 {
+      color: crimson;
+      cursor: pointer;
+    }
   }
 }
 .products-container {
