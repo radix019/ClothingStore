@@ -44,7 +44,10 @@ interface UserAuthProps {
 }
 
 export const UserAuthProvider = React.memo<UserAuthProps>((authProps) => {
-  const [userReducer, dispatch] = React.useReducer(UserReducer, initUserState);
+  const [userReducer, userReducerDispatch] = React.useReducer(
+    UserReducer,
+    initUserState
+  );
 
   const value = { loggedInUser: userReducer.loggedInUser };
 
@@ -53,7 +56,10 @@ export const UserAuthProvider = React.memo<UserAuthProps>((authProps) => {
       if (user) {
         createUserDocument(user);
       }
-      dispatch({ type: USER_ACTION_TYPE.SET_LOGGEDIN_USER, payload: user });
+      userReducerDispatch({
+        type: USER_ACTION_TYPE.SET_LOGGEDIN_USER,
+        payload: user,
+      });
     });
     return unsubscribe;
   }, []);

@@ -16,9 +16,12 @@ const CategoriesPreview = () => {
       {/* This implementation does not feel good, need to find better way */}
       {products.map((item, _i) => (
         <Fragment key={item.title}>
-          <h2 onClick={() => navigateTo(item.title)}>
-            {item.title.toUpperCase()}
-          </h2>
+          <div className="title-header">
+            <h2>{item.title.toUpperCase()}</h2>
+            <h3>
+              <span onClick={() => navigateTo(item.title)}>View all</span>
+            </h3>
+          </div>
           <div className="products-container">
             {item.items.slice(0, 4).map((item) => (
               <ProductCard
