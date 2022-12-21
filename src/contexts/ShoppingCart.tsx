@@ -2,54 +2,26 @@ import produce from "immer";
 import React, { createContext } from "react";
 import { Product } from "../types_models";
 
-interface ShoppingCartProps {
-  isCartOpen: boolean;
-  setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  cartItems: Product[];
-  addToCart: (product: Product) => void;
-  cartCount: number;
-  setCartCount: React.Dispatch<React.SetStateAction<number>>;
-  removeFromCart: (product: Product) => void;
-  deleteItemFromCart: (product: Product) => void;
-  totalCartAmount: number;
-  setTotalCartAmount: React.Dispatch<React.SetStateAction<number>>;
-}
-export const ShoppingCart = createContext<ShoppingCartProps>({
-  isCartOpen: false,
-  setIsCartOpen: () => false,
-  cartItems: [],
-  addToCart: (product) => {},
-  cartCount: 0,
-  setCartCount: () => 0,
-  removeFromCart: () => {},
-  deleteItemFromCart: () => {},
-  totalCartAmount: 0,
-  setTotalCartAmount: () => {},
-});
-
-interface ShoppingCartProviderProps {
-  children: React.ReactNode;
-}
-
+// defined useReducer
 export enum SHOPPING_CART_ACTION_TYPE {
   SET_ITEM_TO_CART = "SET_ITEM_TO_CART",
 }
 export interface ShoppingCartAction {
   type: SHOPPING_CART_ACTION_TYPE;
-  payload: any;
+  payload: { cartItems: Product[]; cartCount: number; cartTotal: number };
 }
 export interface ShoppingCartReducerState {
   isCartOpen: boolean;
   cartItems: Product[];
   cartCount: number;
-  totalCartAmount: number;
+  cartTotal: number;
 }
 
 const initShoppingCartReducerState: ShoppingCartReducerState = {
   isCartOpen: false,
   cartItems: [],
   cartCount: 0,
-  totalCartAmount: 0,
+  cartTotal: 0,
 };
 
 export const ShoppingCartReducer = (
@@ -60,13 +32,40 @@ export const ShoppingCartReducer = (
   switch (type) {
     case SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART:
       return produce(state, (draft) => {
-        draft.cartItems = payload;
+        draft.cartItems = payload.cartItems;
+        draft.cartCount = payload.cartCount;
+        draft.cartTotal = payload.cartTotal;
       });
 
     default:
       throw new Error("Couldn't find type ", type);
   }
 };
+
+interface ShoppingCartProps {
+  isCartOpen: boolean;
+  setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  cartItems: Product[];
+  addToCart: (product: Product) => void;
+  cartCount: number;
+  removeFromCart: (product: Product) => void;
+  deleteItemFromCart: (product: Product) => void;
+  cartTotal: number;
+}
+export const ShoppingCart = createContext<ShoppingCartProps>({
+  isCartOpen: false,
+  setIsCartOpen: () => false,
+  cartItems: [],
+  addToCart: (product) => {},
+  cartCount: 0,
+  removeFromCart: () => {},
+  deleteItemFromCart: () => {},
+  cartTotal: 0,
+});
+
+interface ShoppingCartProviderProps {
+  children: React.ReactNode;
+}
 
 export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
   ({ children }) => {
@@ -75,77 +74,70 @@ export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
       ShoppingCartReducer,
       initShoppingCartReducerState
     );
-    const { cartItems } = shpppingCartReducer;
+    const { cartItems, cartCount, cartTotal } = shpppingCartReducer;
 
-    const [cartCount, setCartCount] = React.useState<number>(0);
-    const [totalCartAmount, setTotalCartAmount] = React.useState<number>(0);
-
-    const addToCart = (product: Product) => {
-      if (cartItems.find((cartItem) => cartItem.id === product.id)) {
-        // this implementation violates DRY rule, need to find better solution
-        const payload = cartItems.map(
-          ({ id, name, imageUrl, price, quantity = 1 }) =>
-            id === product.id
-              ? { id, name, imageUrl, price, quantity: quantity + 1 }
-              : { id, name, imageUrl, price, quantity }
-        );
-
-        dispatch({
-          type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
-          payload: payload,
-        });
-      } else {
-        dispatch({
-          type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
-          payload: [...cartItems, { ...product, quantity: 1 }],
-        });
-      }
-    };
-
-    const removeFromCart = (product: Product) => {
-      const targetProduct = cartItems.find(
-        (cartItem) => cartItem.id === product.id
+    const updateCartItemsReducer = (cartItems: Product[]) => {
+      const newCartCount = cartItems.reduce(
+        (total, { quantity = 1 }) => total + quantity,
+        0
       );
-      if (targetProduct?.quantity === 1) {
-        dispatch({
-          type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
-          payload: cartItems.filter((item) => item.id !== targetProduct.id),
-        });
-      }
-      const payload = cartItems.map(
-        ({ id, name, imageUrl, price, quantity = 1 }) =>
-          id === product.id
-            ? { id, name, imageUrl, price, quantity: quantity - 1 }
-            : { id, name, imageUrl, price, quantity }
-      );
+
+      const newCartTotal = cartItems
+        .map(({ price, quantity = 1 }) => price * quantity)
+        .reduce((acc, cur) => acc + cur, 0);
+
+      const payload = {
+        cartItems,
+        cartCount: newCartCount,
+        cartTotal: newCartTotal,
+      };
+
       dispatch({
         type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
         payload: payload,
       });
     };
 
-    const deleteItemFromCart = (product: Product) => {
-      dispatch({
-        type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
-        payload: cartItems.filter((item) => item.id !== product.id),
-      });
+    const addToCart = (product: Product) => {
+      let updatedCartItems;
+      if (cartItems.find((cartItem) => cartItem.id === product.id)) {
+        // this implementation violates DRY rule, need to find better solution
+        updatedCartItems = cartItems.map(
+          ({ id, name, imageUrl, price, quantity = 1 }) =>
+            id === product.id
+              ? { id, name, imageUrl, price, quantity: quantity + 1 }
+              : { id, name, imageUrl, price, quantity }
+        );
+      } else {
+        updatedCartItems = [...cartItems, { ...product, quantity: 1 }];
+      }
+      updateCartItemsReducer(updatedCartItems);
     };
 
-    React.useEffect(() => {
-      setTotalCartAmount(
-        cartItems
-          .map(({ price, quantity = 1 }) => price * quantity)
-          .reduce((acc, cur) => acc + cur, 0)
+    const removeFromCart = (product: Product) => {
+      const targetProduct = cartItems.find(
+        (cartItem) => cartItem.id === product.id
       );
-    }, [cartItems]);
 
-    React.useEffect(() => {
-      const newCount = cartItems.reduce(
-        (total, { quantity = 1 }) => total + quantity,
-        0
+      if (targetProduct?.quantity === 1) {
+        updateCartItemsReducer(
+          cartItems.filter((item) => item.id !== targetProduct.id)
+        );
+      }
+      const updatedCartItems = cartItems.map(
+        ({ id, name, imageUrl, price, quantity = 1 }) =>
+          id === product.id
+            ? { id, name, imageUrl, price, quantity: quantity - 1 }
+            : { id, name, imageUrl, price, quantity }
       );
-      setCartCount(newCount);
-    }, [cartItems]);
+      updateCartItemsReducer(updatedCartItems);
+    };
+
+    const deleteItemFromCart = (product: Product) => {
+      updateCartItemsReducer(
+        cartItems.filter((item) => item.id !== product.id)
+      );
+    };
 
     const value = {
       isCartOpen,
@@ -153,11 +145,9 @@ export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
       cartItems,
       addToCart,
       cartCount,
-      setCartCount,
       removeFromCart,
       deleteItemFromCart,
-      totalCartAmount,
-      setTotalCartAmount,
+      cartTotal,
     };
     return (
       <ShoppingCart.Provider value={value}>{children}</ShoppingCart.Provider>

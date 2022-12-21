@@ -17,6 +17,9 @@ const CheckoutItems = (item: CheckoutItemsProps) => {
     shopping.addToCart(item);
   };
   const decreaseItem = () => {
+    if (item.quantity === 1) {
+      return shopping.deleteItemFromCart(item);
+    }
     shopping.removeFromCart(item);
   };
   const deleteItem = () => {

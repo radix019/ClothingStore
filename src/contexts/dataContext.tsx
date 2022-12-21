@@ -29,7 +29,7 @@ export const ProductContextProvider = React.memo<ProductContextProviderProps>(
       };
       asynFn();
     }, []);
-    const value = { products, setProducts };
+    const value = { products };
     return (
       <ProductContext.Provider value={value}>
         {props.children}

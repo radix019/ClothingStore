@@ -9,7 +9,7 @@ const Checkout = () => {
   return (
     <div className="checkout-container">
       <div className="title_bar">
-        <span className="total">Total ${shopping.totalCartAmount}</span>
+        <span className="total">Total ${shopping.cartTotal}</span>
       </div>
       <div className="checkout-header">
         <div className="header-block">
@@ -33,7 +33,7 @@ const Checkout = () => {
         <CheckoutItems key={item.id} {...item} />
       ))}
 
-      <span className="total">Total ${shopping.totalCartAmount}</span>
+      <span className="total">Total ${shopping.cartTotal}</span>
     </div>
   );
 };
