@@ -5,10 +5,11 @@ import { Product } from "../types_models";
 // defined useReducer
 export enum SHOPPING_CART_ACTION_TYPE {
   SET_ITEM_TO_CART = "SET_ITEM_TO_CART",
+  SET_IS_CART_OPEN = "SET_IS_CART_OPEN",
 }
 export interface ShoppingCartAction {
   type: SHOPPING_CART_ACTION_TYPE;
-  payload: { cartItems: Product[]; cartCount: number; cartTotal: number };
+  payload: any;
 }
 export interface ShoppingCartReducerState {
   isCartOpen: boolean;
@@ -36,6 +37,10 @@ export const ShoppingCartReducer = (
         draft.cartCount = payload.cartCount;
         draft.cartTotal = payload.cartTotal;
       });
+    case SHOPPING_CART_ACTION_TYPE.SET_IS_CART_OPEN:
+      return produce(state, (draft) => {
+        draft.isCartOpen = payload;
+      });
 
     default:
       throw new Error("Couldn't find type ", type);
@@ -44,7 +49,7 @@ export const ShoppingCartReducer = (
 
 interface ShoppingCartProps {
   isCartOpen: boolean;
-  setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCartOpen: (bool: boolean) => void;
   cartItems: Product[];
   addToCart: (product: Product) => void;
   cartCount: number;
@@ -54,7 +59,7 @@ interface ShoppingCartProps {
 }
 export const ShoppingCart = createContext<ShoppingCartProps>({
   isCartOpen: false,
-  setIsCartOpen: () => false,
+  setIsCartOpen: (bool) => {},
   cartItems: [],
   addToCart: (product) => {},
   cartCount: 0,
@@ -69,12 +74,12 @@ interface ShoppingCartProviderProps {
 
 export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
   ({ children }) => {
-    const [isCartOpen, setIsCartOpen] = React.useState<boolean>(false);
+    // const [isCartOpen, setIsCartOpen] = React.useState<boolean>(false);
     const [shpppingCartReducer, dispatch] = React.useReducer(
       ShoppingCartReducer,
       initShoppingCartReducerState
     );
-    const { cartItems, cartCount, cartTotal } = shpppingCartReducer;
+    const { cartItems, cartCount, cartTotal, isCartOpen } = shpppingCartReducer;
 
     const updateCartItemsReducer = (cartItems: Product[]) => {
       const newCartCount = cartItems.reduce(
@@ -137,6 +142,12 @@ export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
       updateCartItemsReducer(
         cartItems.filter((item) => item.id !== product.id)
       );
+    };
+    const setIsCartOpen = (bool: boolean) => {
+      dispatch({
+        type: SHOPPING_CART_ACTION_TYPE.SET_IS_CART_OPEN,
+        payload: bool,
+      });
     };
 
     const value = {
