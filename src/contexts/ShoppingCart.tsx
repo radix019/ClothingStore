@@ -2,7 +2,6 @@ import produce from "immer";
 import React, { createContext } from "react";
 import { Product } from "../types_models";
 
-// defined useReducer
 export enum SHOPPING_CART_ACTION_TYPE {
   SET_ITEM_TO_CART = "SET_ITEM_TO_CART",
   SET_IS_CART_OPEN = "SET_IS_CART_OPEN",
@@ -41,7 +40,6 @@ export const ShoppingCartReducer = (
       return produce(state, (draft) => {
         draft.isCartOpen = payload;
       });
-
     default:
       throw new Error("Couldn't find type ", type);
   }
@@ -74,7 +72,6 @@ interface ShoppingCartProviderProps {
 
 export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
   ({ children }) => {
-    // const [isCartOpen, setIsCartOpen] = React.useState<boolean>(false);
     const [shpppingCartReducer, dispatch] = React.useReducer(
       ShoppingCartReducer,
       initShoppingCartReducerState
@@ -86,20 +83,17 @@ export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
         (total, { quantity = 1 }) => total + quantity,
         0
       );
-
       const newCartTotal = cartItems
         .map(({ price, quantity = 1 }) => price * quantity)
         .reduce((acc, cur) => acc + cur, 0);
 
-      const payload = {
-        cartItems,
-        cartCount: newCartCount,
-        cartTotal: newCartTotal,
-      };
-
       dispatch({
         type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
-        payload: payload,
+        payload: {
+          cartItems,
+          cartCount: newCartCount,
+          cartTotal: newCartTotal,
+        },
       });
     };
 
@@ -151,12 +145,12 @@ export const ShoppingCartProvider = React.memo<ShoppingCartProviderProps>(
     };
 
     const value = {
-      isCartOpen,
       setIsCartOpen,
-      cartItems,
+      isCartOpen,
       addToCart,
-      cartCount,
+      cartItems,
       removeFromCart,
+      cartCount,
       deleteItemFromCart,
       cartTotal,
     };

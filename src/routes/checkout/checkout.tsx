@@ -4,12 +4,12 @@ import { ShoppingCart } from "../../contexts/ShoppingCart";
 import "./checkout.scss";
 
 const Checkout = () => {
-  const shopping = React.useContext(ShoppingCart);
+  const { cartItems, cartTotal, cartCount } = React.useContext(ShoppingCart);
 
   return (
     <div className="checkout-container">
       <div className="title_bar">
-        <span className="total">Total ${shopping.cartTotal}</span>
+        {cartTotal ? <span className="total">Total ${cartTotal}</span> : ""}
       </div>
       <div className="checkout-header">
         <div className="header-block">
@@ -29,11 +29,11 @@ const Checkout = () => {
         </div>
       </div>
 
-      {shopping.cartItems.map((item) => (
-        <CheckoutItems key={item.id} {...item} />
-      ))}
-
-      <span className="total">Total ${shopping.cartTotal}</span>
+      {cartCount ? (
+        cartItems.map((item) => <CheckoutItems key={item.id} {...item} />)
+      ) : (
+        <h2>Your cart is empty. Keep shopping!</h2>
+      )}
     </div>
   );
 };
