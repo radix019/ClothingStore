@@ -1,0 +1,13 @@
+export enum SHOPPING_CART_ACTION_TYPE {
+  SET_ITEM_TO_CART = "SET_ITEM_TO_CART",
+  SET_IS_CART_OPEN = "SET_IS_CART_OPEN",
+}
+
+export enum USER_ACTION_TYPE {
+  SET_LOGGEDIN_USER = "SET_LOGGEDIN_USER",
+}
+
+export enum DOCUMENTS_TYPE {
+  CATEGORIES = "categories",
+  USER = "user",
+}

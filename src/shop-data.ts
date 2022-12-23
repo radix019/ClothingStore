@@ -1,12 +1,3 @@
-export interface ShopData {
-  title: string;
-  items: {
-    id: number;
-    name: string;
-    imageUrl: string;
-    price: number;
-  }[];
-}
 export const SHOP_DATA = [
   {
     title: "Hats",
