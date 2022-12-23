@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { useParams } from "react-router-dom";
-import ProductCard from "../../components/common/productCard/productCard";
+import ProductCard from "../common/productCard/productCard";
 import { ProductContext } from "../../providers/Data";
-import "./AllProducts.scss";
+import "./AllProductsList.scss";
 
-const Category = () => {
+const AllProductsList = () => {
   const { category } = useParams();
   const { products } = React.useContext(ProductContext);
   return (
@@ -31,4 +31,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default AllProductsList;

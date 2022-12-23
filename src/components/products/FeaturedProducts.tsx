@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import ProductCard from "../common/productCard/productCard";
 import { ProductContext } from "../../providers/Data";
 
-import "./categories-preview.scss";
+import "./FeaturedProducts.scss";
+import { PAGE_TYPE } from "../../_global/Route";
 
-const CategoriesPreview = () => {
+const FeaturedProducts = () => {
   const { products } = React.useContext(ProductContext);
   const navigate = useNavigate();
   const navigateTo = (categoryPage: string) => {
-    navigate(`/shop/${categoryPage}`);
+    navigate(`/${PAGE_TYPE.SHOP}/${categoryPage}`);
   };
   return (
     <div className="products-wrapper">
@@ -39,4 +40,4 @@ const CategoriesPreview = () => {
   );
 };
 
-export default CategoriesPreview;
+export default FeaturedProducts;

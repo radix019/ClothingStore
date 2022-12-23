@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ShoppingCart } from "../../../providers/ShoppingCart";
+import { PAGE_TYPE } from "../../../_global/Route";
 import CheckoutItems from "../../common/cart/checkoutItems";
 import "./checkout.scss";
 
@@ -32,7 +34,10 @@ const Checkout = () => {
       {cartCount ? (
         cartItems.map((item) => <CheckoutItems key={item.id} {...item} />)
       ) : (
-        <h2>Your cart is empty. Keep shopping!</h2>
+        <h2>
+          Your cart is empty.{" "}
+          <Link to={`/${PAGE_TYPE.SHOP}`}> Continue shopping!</Link>
+        </h2>
       )}
     </div>
   );

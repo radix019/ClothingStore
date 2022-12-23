@@ -18,7 +18,14 @@ const CartDropdown = () => {
           <CartItem key={item.id} {...item} />
         ))}
       </div>
-      <ActionButton onClick={navigateToCheckout}>Go to Checkout</ActionButton>
+      <ActionButton
+        onClick={() => {
+          navigateToCheckout();
+          shopping.setIsCartOpen(false);
+        }}
+      >
+        Go to Checkout
+      </ActionButton>
     </div>
   );
 };

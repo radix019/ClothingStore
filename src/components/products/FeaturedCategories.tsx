@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./MenuItem.scss";
+import "./FeaturedCategories.scss";
 
 interface CategoryItemProps {
   id: number;
@@ -7,7 +7,7 @@ interface CategoryItemProps {
   imageUrl: string;
 }
 
-const CategoryItem = ({ id, name, imageUrl }: CategoryItemProps) => {
+const FeaturedCategories = ({ id, name, imageUrl }: CategoryItemProps) => {
   const navigate = useNavigate();
   const navigateTo = () => {
     navigate(`/shop/${name}`);
@@ -26,4 +26,4 @@ const CategoryItem = ({ id, name, imageUrl }: CategoryItemProps) => {
   );
 };
 
-export default CategoryItem;
+export default FeaturedCategories;

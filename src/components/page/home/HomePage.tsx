@@ -1,7 +1,7 @@
-import AllCategories from "../../category/Menu";
+import CategoriesList from "../../products/CategoriesList";
 
 const Home = () => {
-  return <AllCategories />;
+  return <CategoriesList />;
 };
 
 export default Home;

@@ -1,8 +1,8 @@
-import CategoryItem from "./MenuItem";
-import "./Menu.scss";
+import CategoryItem from "./FeaturedCategories";
+import "./CategoriesList.scss";
 import { Categories } from "../../_global/_Interfaces";
 
-const AllCategories = () => {
+const CategoriesList = () => {
   const categoryList: Array<Categories> = [
     {
       id: 1,
@@ -40,4 +40,4 @@ const AllCategories = () => {
   );
 };
 
-export default AllCategories;
+export default CategoriesList;
