@@ -25,20 +25,21 @@ export const ShoppingCartReducer = (
   state = initShoppingCartReducerState,
   action: ShoppingCartAction
 ) => {
-  const { type, payload } = action;
-  switch (type) {
+  switch (action.type) {
     case SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART:
+      const payload = action.payload;
       return produce(state, (draft) => {
         draft.cartItems = payload.cartItems;
         draft.cartCount = payload.cartCount;
         draft.cartTotal = payload.cartTotal;
       });
     case SHOPPING_CART_ACTION_TYPE.SET_IS_CART_OPEN:
+      const isCartOpen = action.payload as boolean;
       return produce(state, (draft) => {
-        draft.isCartOpen = payload;
+        draft.isCartOpen = isCartOpen;
       });
     default:
-      throw new Error("Couldn't find type ", type);
+      throw new Error("Couldn't find type ", action.type);
   }
 };
 
