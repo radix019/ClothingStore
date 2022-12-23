@@ -7,6 +7,7 @@ import { UserAuthContext } from "../../../providers/Auth";
 import { ShoppingCart } from "../../../providers/ShoppingCart";
 import CartIcon from "../cart/cart-icon";
 import CartDropdown from "../cart/cartDropdown";
+import { LOG_IN, LOG_OUT, SHOP } from "../../../_global/Constants";
 
 const Navbar = () => {
   const auth = getAuth();
@@ -23,15 +24,15 @@ const Navbar = () => {
         </Link>
         <div className="nav-links-container">
           <Link to="/shop" className="nav-link">
-            Shop
+            {SHOP}
           </Link>
           {loggedInUser ? (
             <span onClick={logoutHandle} className="nav-link">
-              Sign Out
+              {LOG_OUT}
             </span>
           ) : (
             <Link to="/auth" className="nav-link">
-              Sing In
+              {LOG_IN}
             </Link>
           )}
           <CartIcon />
