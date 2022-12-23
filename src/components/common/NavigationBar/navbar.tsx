@@ -3,15 +3,19 @@ import { Link, Outlet } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../assets/icons/crown.svg";
 import "./navbar.scss";
 import { getAuth, signOut } from "firebase/auth";
-import { UserAuthContext } from "../../../providers/Auth";
 import { ShoppingCart } from "../../../providers/ShoppingCart";
 import CartIcon from "../cart/cart-icon";
 import CartDropdown from "../cart/cartDropdown";
 import { LOG_IN, LOG_OUT, SHOP } from "../../../_global/Constants";
+import { IRootState } from "../../../_redux/_Store";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const auth = getAuth();
-  const { loggedInUser } = React.useContext(UserAuthContext);
+  const apiLoggedInUser = useSelector(
+    (state: IRootState) => state.userAuth.loggedInUser
+  );
+
   const logoutHandle = async () => {
     await signOut(auth);
   };
@@ -26,7 +30,7 @@ const Navbar = () => {
           <Link to="/shop" className="nav-link">
             {SHOP}
           </Link>
-          {loggedInUser ? (
+          {apiLoggedInUser ? (
             <span onClick={logoutHandle} className="nav-link">
               {LOG_OUT}
             </span>
