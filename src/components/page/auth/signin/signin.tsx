@@ -8,9 +8,9 @@ import {
 import { FirebaseError } from "@firebase/util";
 
 import "./signin.scss";
-import { createUserDocument } from "../../../_api/firebaseConfig";
-import FormInput from "../../common/form-inputs/formInput";
-import ActionButton from "../../hoc/buttons/actionButton";
+import { createUserDocument } from "../../../../_api/firebaseConfig";
+import FormInput from "../../../common/form-inputs/formInput";
+import ActionButton from "../../../hoc/buttons/actionButton";
 
 interface Formdata {
   email: string;
@@ -20,7 +20,10 @@ interface Formdata {
 const SignIn: React.FunctionComponent = () => {
   const auth = getAuth();
   const googleAuthProvider = new GoogleAuthProvider();
-  const [signUpFormData, setSignUpFormData] = React.useState<Formdata>();
+  const [signUpFormData, setSignUpFormData] = React.useState<Formdata>({
+    email: "",
+    password: "",
+  });
 
   const onSignInwithPopUp = async () => {
     await signInWithPopup(auth, googleAuthProvider);
