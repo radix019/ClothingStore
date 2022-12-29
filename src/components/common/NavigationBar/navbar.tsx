@@ -15,7 +15,11 @@ const Navbar = () => {
   const apiLoggedInUser = useSelector(
     (state: IRootState) => state.userAuth.loggedInUser
   );
+  const [loggedInUser, setLoggedInUser] = React.useState(apiLoggedInUser);
 
+  React.useEffect(() => {
+    setLoggedInUser(apiLoggedInUser);
+  }, [apiLoggedInUser]);
   const logoutHandle = async () => {
     await signOut(auth);
   };
@@ -30,7 +34,7 @@ const Navbar = () => {
           <Link to="/shop" className="nav-link">
             {SHOP}
           </Link>
-          {apiLoggedInUser ? (
+          {loggedInUser ? (
             <span onClick={logoutHandle} className="nav-link">
               {LOG_OUT}
             </span>

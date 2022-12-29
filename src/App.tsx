@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import {
   createUserDocument,
   firebaseConfig,
+  getCollectionAndDocument,
   onAuthStateChangedLister,
 } from "./_api/firebaseConfig";
 import { CATEGORY_PARAM_TYPE, PAGE_TYPE } from "./_global/Route";
@@ -14,10 +15,11 @@ import Checkout from "./components/page/checkout/checkout";
 import Category from "./components/products/AllProductsList";
 import FeaturedProducts from "./components/products/FeaturedProducts";
 import React from "react";
-import { USER_ACTION_TYPE } from "./_global/_Enum";
+import { DATA_ACTION_TYPE, USER_ACTION_TYPE } from "./_global/_Enum";
 import { useDispatch } from "react-redux";
 
 initializeApp(firebaseConfig);
+
 export default function App() {
   const dispatch = useDispatch();
 
@@ -32,7 +34,23 @@ export default function App() {
       });
     });
     return unsubscribe;
-  }, []);
+  });
+
+  React.useEffect(() => {
+    const asynFn = async () => {
+      const querySnapshot = await getCollectionAndDocument();
+      const productsData: any = [];
+      querySnapshot.forEach((item) => {
+        // need to capture this data in a Map object instead of array, to be done later
+        productsData.push(item.data());
+      });
+      dispatch({
+        type: DATA_ACTION_TYPE.SET_PRODUCTS_DATA,
+        payload: productsData,
+      });
+    };
+    asynFn();
+  }, [dispatch]);
 
   return (
     <Routes>
