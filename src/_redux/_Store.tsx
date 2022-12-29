@@ -1,4 +1,3 @@
-import { createSelectorHook } from "react-redux";
 import {
   applyMiddleware,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   legacy_createStore as createStore,
 } from "redux";
 import logger from "redux-logger";
+import { dataReducer } from "./DataReducer";
 import { UserAuthReducer } from "./UserAuthReducer";
 
 export type IRootState = ReturnType<typeof rootReducer>;
@@ -13,6 +13,7 @@ export type IRootState = ReturnType<typeof rootReducer>;
 
 const rootReducer = combineReducers({
   userAuth: UserAuthReducer,
+  data: dataReducer,
 });
 
 const store = createStore(
