@@ -26,7 +26,6 @@ export const ShoppingCartReducer = (
   switch (action.type) {
     case SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART:
       const payload = action.payload;
-      console.log("payload", payload);
       return produce(state, (draft) => {
         draft.cartItems = payload;
         draft.cartCount = payload.reduce(

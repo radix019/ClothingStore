@@ -27,7 +27,6 @@ const ProductCard = (props: ProductCardProps) => {
     } else {
       updatedCartItems = [...shoppingCart.cartItems, { ...props, quantity: 1 }];
     }
-    console.log("updatedCartItems", updatedCartItems);
     dispatch({
       type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
       payload: [...updatedCartItems],
