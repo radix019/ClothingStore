@@ -6,6 +6,7 @@ import {
 } from "redux";
 import logger from "redux-logger";
 import { dataReducer } from "./DataReducer";
+import { ShoppingCartReducer } from "./ShoppingCartReducer";
 import { UserAuthReducer } from "./UserAuthReducer";
 
 export type IRootState = ReturnType<typeof rootReducer>;
@@ -14,6 +15,7 @@ export type IRootState = ReturnType<typeof rootReducer>;
 const rootReducer = combineReducers({
   userAuth: UserAuthReducer,
   data: dataReducer,
+  cart: ShoppingCartReducer,
 });
 
 const store = createStore(

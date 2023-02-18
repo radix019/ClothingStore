@@ -1,7 +1,9 @@
 import React from "react";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
-import { ShoppingCart } from "../../../providers/ShoppingCart";
+import { useDispatch, useSelector } from "react-redux";
+import { SHOPPING_CART_ACTION_TYPE } from "../../../_global/_Enum";
+import { IRootState } from "../../../_redux/_Store";
 import "./checkoutItems.scss";
 
 interface CheckoutItemsProps {
@@ -12,18 +14,56 @@ interface CheckoutItemsProps {
   quantity?: number;
 }
 const CheckoutItems = (item: CheckoutItemsProps) => {
-  const shopping = React.useContext(ShoppingCart);
+  const shoppingCart = useSelector((state: IRootState) => state.cart);
+  const dispatch = useDispatch();
+
   const increaseItem = () => {
-    shopping.addToCart(item);
+    const updatedCartItems = shoppingCart.cartItems.map(
+      ({ id, name, imageUrl, price, quantity = 1 }) =>
+        id === item.id
+          ? { id, name, imageUrl, price, quantity: quantity + 1 }
+          : { id, name, imageUrl, price, quantity }
+    );
+    dispatch({
+      type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
+      payload: updatedCartItems,
+    });
   };
+
   const decreaseItem = () => {
     if (item.quantity === 1) {
-      return shopping.deleteItemFromCart(item);
+      return deleteItem();
     }
-    shopping.removeFromCart(item);
+    const targetProduct = shoppingCart.cartItems.find(
+      (cartItem) => cartItem.id === item.id
+    );
+
+    if (targetProduct?.quantity === 1) {
+      dispatch({
+        type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
+        payload: shoppingCart.cartItems.filter(
+          (item) => item.id !== targetProduct.id
+        ),
+      });
+    }
+    const updatedCartItems = shoppingCart.cartItems.map(
+      ({ id, name, imageUrl, price, quantity = 1 }) =>
+        id === item.id
+          ? { id, name, imageUrl, price, quantity: quantity - 1 }
+          : { id, name, imageUrl, price, quantity }
+    );
+    dispatch({
+      type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
+      payload: updatedCartItems,
+    });
   };
   const deleteItem = () => {
-    shopping.deleteItemFromCart(item);
+    dispatch({
+      type: SHOPPING_CART_ACTION_TYPE.SET_ITEM_TO_CART,
+      payload: shoppingCart.cartItems.filter(
+        (cartItem) => cartItem.id !== item.id
+      ),
+    });
   };
 
   return (
