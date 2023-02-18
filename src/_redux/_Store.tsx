@@ -12,6 +12,11 @@ import { ShoppingCartReducer } from "./ShoppingCartReducer";
 import { UserAuthReducer } from "./UserAuthReducer";
 export type IRootState = ReturnType<typeof rootReducer>;
 // export const useSelector = createSelectorHook<IRootState>();
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
 
 const rootReducer = combineReducers({
   userAuth: UserAuthReducer,
@@ -27,10 +32,13 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(
-  persistedReducer,
-  undefined,
-  compose(applyMiddleware(logger))
-);
+const composeEnhancer =
+  (process.env.NODE_ENV !== "production" &&
+    window &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
+
+const compposedEnhancer = composeEnhancer(applyMiddleware(logger));
+const store = createStore(persistedReducer, undefined, compposedEnhancer);
 
 export default store;

@@ -8,7 +8,7 @@ import "./checkout.scss";
 
 const Checkout = () => {
   const shoppingCart = useSelector((state: IRootState) => state.cart);
-
+  // console.log(process.env);
   return (
     <div className="checkout-container">
       <div className="title_bar">
