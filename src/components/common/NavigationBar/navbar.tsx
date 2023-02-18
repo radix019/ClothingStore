@@ -3,7 +3,6 @@ import { Link, Outlet } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../assets/icons/crown.svg";
 import "./navbar.scss";
 import { getAuth, signOut } from "firebase/auth";
-import { ShoppingCart } from "../../../providers/ShoppingCart";
 import CartIcon from "../cart/cart-icon";
 import CartDropdown from "../cart/cartDropdown";
 import { LOG_IN, LOG_OUT, SHOP } from "../../../_global/Constants";
@@ -15,6 +14,7 @@ const Navbar = () => {
   const apiLoggedInUser = useSelector(
     (state: IRootState) => state.userAuth.loggedInUser
   );
+  const ShoppingCart = useSelector((state: IRootState) => state.cart);
   const [loggedInUser, setLoggedInUser] = React.useState(apiLoggedInUser);
 
   React.useEffect(() => {
@@ -23,7 +23,7 @@ const Navbar = () => {
   const logoutHandle = async () => {
     await signOut(auth);
   };
-  const { isCartOpen } = React.useContext(ShoppingCart);
+  const isCartOpen = ShoppingCart.isCartOpen;
   return (
     <>
       <div className="navigation">
