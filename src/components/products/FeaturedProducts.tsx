@@ -1,17 +1,23 @@
 import React, { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../common/productCard/productCard";
-import { ProductContext } from "../../providers/Data";
-
 import "./FeaturedProducts.scss";
 import { PAGE_TYPE } from "../../_global/Route";
+import { IRootState } from "../../_redux/_Store";
+import { useSelector } from "react-redux";
+import { ShopData } from "../../_global/_Interfaces";
 
 const FeaturedProducts = () => {
-  const { products } = React.useContext(ProductContext);
+  const apiProducts = useSelector((state: IRootState) => state.data.products);
   const navigate = useNavigate();
+  const [products, setProducts] = React.useState<ShopData[]>([]);
   const navigateTo = (categoryPage: string) => {
     navigate(`/${PAGE_TYPE.SHOP}/${categoryPage}`);
   };
+  React.useEffect(() => {
+    setProducts(apiProducts);
+  }, [apiProducts]);
+
   return (
     <div className="products-wrapper">
       {/* This implementation does not feel good, need to find better way */}

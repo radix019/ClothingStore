@@ -1,17 +1,24 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "../../../providers/ShoppingCart";
 import { PAGE_TYPE } from "../../../_global/Route";
+import { IRootState } from "../../../_redux/_Store";
 import CheckoutItems from "../../common/cart/checkoutItems";
+import PaymentForm from "../../payment/Form";
 import "./checkout.scss";
 
 const Checkout = () => {
-  const { cartItems, cartTotal, cartCount } = React.useContext(ShoppingCart);
+  const shoppingCart = useSelector((state: IRootState) => state.cart);
 
   return (
     <div className="checkout-container">
+      <PaymentForm />
       <div className="title_bar">
-        {cartTotal ? <span className="total">Total ${cartTotal}</span> : ""}
+        {shoppingCart.cartTotal ? (
+          <span className="total">Total ${shoppingCart.cartTotal}</span>
+        ) : (
+          ""
+        )}
       </div>
       <div className="checkout-header">
         <div className="header-block">
@@ -31,8 +38,10 @@ const Checkout = () => {
         </div>
       </div>
 
-      {cartCount ? (
-        cartItems.map((item) => <CheckoutItems key={item.id} {...item} />)
+      {shoppingCart.cartCount ? (
+        shoppingCart.cartItems.map((item) => (
+          <CheckoutItems key={item.id} {...item} />
+        ))
       ) : (
         <h2>
           Your cart is empty.{" "}

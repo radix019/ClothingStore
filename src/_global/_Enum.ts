@@ -7,6 +7,10 @@ export enum USER_ACTION_TYPE {
   SET_LOGGEDIN_USER = "SET_LOGGEDIN_USER",
 }
 
+export enum DATA_ACTION_TYPE {
+  SET_PRODUCTS_DATA = "SET_PRODUCTS_DATA",
+}
+
 export enum DOCUMENTS_TYPE {
   CATEGORIES = "categories",
   USER = "user",

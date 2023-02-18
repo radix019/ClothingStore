@@ -1,22 +1,25 @@
 import React from "react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import "./signup.scss";
-import { createUserDocument } from "../../../_api/firebaseConfig";
-import FormInput from "../../common/form-inputs/formInput";
-import ActionButton from "../../hoc/buttons/actionButton";
+import { createUserDocument } from "../../../../_api/firebaseConfig";
+import FormInput from "../../../common/form-inputs/formInput";
+import ActionButton from "../../../hoc/buttons/actionButton";
 
 interface Formdata {
   displayName: string;
-  email: string | undefined;
-  password: string | undefined;
+  email: string;
+  password: string;
   confirmPasswrod: string;
 }
 
 const Signup: React.FunctionComponent = () => {
   const auth = getAuth();
-  const [signUpFormData, setSignUpFormData] = React.useState<
-    Formdata | undefined
-  >();
+  const [signUpFormData, setSignUpFormData] = React.useState<Formdata>({
+    displayName: "",
+    email: "",
+    password: "",
+    confirmPasswrod: "",
+  });
 
   const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
