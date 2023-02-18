@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 import { PAGE_TYPE } from "../../../_global/Route";
 import { IRootState } from "../../../_redux/_Store";
 import CheckoutItems from "../../common/cart/checkoutItems";
+import PaymentForm from "../../payment/Form";
 import "./checkout.scss";
 
 const Checkout = () => {
   const shoppingCart = useSelector((state: IRootState) => state.cart);
-  // console.log(process.env);
+
   return (
     <div className="checkout-container">
+      <PaymentForm />
       <div className="title_bar">
         {shoppingCart.cartTotal ? (
           <span className="total">Total ${shoppingCart.cartTotal}</span>
