@@ -8,7 +8,16 @@ const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const ShoppingCart = useSelector((state: IRootState) => state.cart);
-
+  const loggedInUserName = useSelector(
+    (state: IRootState) => state.userAuth.loggedInUser?.displayName
+  );
+  const [userName, setUserName] = React.useState<string | null | undefined>(
+    "Guest"
+  );
+  React.useEffect(() => {
+    if (!loggedInUserName) return;
+    setUserName(loggedInUserName);
+  }, [loggedInUserName]);
   const onPaymentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!stripe || !elements) return;
@@ -31,7 +40,7 @@ const PaymentForm = () => {
         payment_method: {
           card: elements.getElement(CardElement)!,
           billing_details: {
-            name: "Akash",
+            name: userName!,
           },
         },
       })

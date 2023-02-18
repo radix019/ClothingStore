@@ -35,9 +35,14 @@ const Navbar = () => {
             {SHOP}
           </Link>
           {loggedInUser ? (
-            <span onClick={logoutHandle} className="nav-link">
-              {LOG_OUT}
-            </span>
+            <>
+              <span>
+                {apiLoggedInUser ? apiLoggedInUser?.displayName : "User"}
+              </span>
+              <span onClick={logoutHandle} className="nav-link">
+                {LOG_OUT}
+              </span>
+            </>
           ) : (
             <Link to="/auth" className="nav-link">
               {LOG_IN}
