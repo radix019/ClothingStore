@@ -1,4 +1,9 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  AddressElement,
+  CardElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import React from "react";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../_redux/_Store";
@@ -11,13 +16,17 @@ const PaymentForm = () => {
 
   const onPaymentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!stripe || !elements) return;
+
     const response = await fetch("/.netlify/functions/create-payment-intent", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: ShoppingCart.cartTotal * 100 }),
+      body: JSON.stringify({
+        amount: ShoppingCart.cartTotal * 100,
+      }),
     }).then((res) => res.json());
 
     console.log("response", response);
@@ -32,6 +41,14 @@ const PaymentForm = () => {
           card: elements.getElement(CardElement)!,
           billing_details: {
             name: "Akash",
+            address: {
+              city: "mumbai",
+              country: "IN",
+              line1: "unr",
+              line2: "thane",
+              postal_code: "421005",
+              state: "maharashtra",
+            },
           },
         },
       })
@@ -48,6 +65,9 @@ const PaymentForm = () => {
     <div style={{ width: "100%" }}>
       <form onSubmit={onPaymentSubmit}>
         <CardElement />
+        <div id="address-element">
+          <input type="text" placeholder="Address" name="" id="address" />
+        </div>
         <ActionButton ClassType="inverted" actionType="submit">
           Pay
         </ActionButton>
